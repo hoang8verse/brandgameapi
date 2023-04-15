@@ -59,6 +59,8 @@ app.get('/lb_arshooters/:id', db_lb_arshooters.getLB_ARShooterById)
 app.post('/lb_arshooters', db_lb_arshooters.createLB_ARShooter)
 app.put('/lb_arshooters/:id', db_lb_arshooters.updateLB_ARShooter)
 app.delete('/lb_arshooters/:id', db_lb_arshooters.deleteLB_ARShooter)
+app.post('/lb_arshooters/postscore', db_lb_arshooters.postScoreLB_ARShooter)
+app.get('/lb_arshooters_rank', db_lb_arshooters.getRankLB_ARShooters)
 
 // lb_flappybird db
 app.get('/lb_flappybirds', db_lb_flappybirds.getLB_FlappyBirds)
@@ -66,6 +68,8 @@ app.get('/lb_flappybirds/:id', db_lb_flappybirds.getLB_FlappyBirdById)
 app.post('/lb_flappybirds', db_lb_flappybirds.createLB_FlappyBird)
 app.put('/lb_flappybirds/:id', db_lb_flappybirds.updateLB_FlappyBird)
 app.delete('/lb_flappybirds/:id', db_lb_flappybirds.deleteLB_FlappyBird)
+app.post('/lb_flappybirds/postscore', db_lb_flappybirds.postScoreLB_FlappyBird)
+app.get('/lb_flappybirds_rank', db_lb_flappybirds.getRankLB_FlappyBirds)
 
 
 

@@ -3,9 +3,87 @@ const {responseSuccess,responseFail} = require('./response')
 
 const {LB_FlappyBirdModel} = require('@models/lb_flappybird')
 
+const postScoreLB_FlappyBird = async (request, response) => {
+  const { userAppId, userName , avatar, gender, score } = request.query
+
+  const user = await LB_FlappyBirdModel().findOne({ where: { user_app_id: userAppId } });
+ 
+  if (user === null) {
+    const LB_FlappyBird = await LB_FlappyBirdModel().create({ 
+      user_app_id: userAppId,
+      user_name: userName,
+      avatar: avatar,
+      gender: gender,
+      score: score ? score : 0,
+    });
+  
+    if (LB_FlappyBird === null) {
+      response.status(400).json(responseFail(LB_))
+    } else {
+      response.status(200).json(responseSuccess(LB_FlappyBird))
+    }
+  } else {
+
+    const LB_FlappyBirdUpdate = await LB_FlappyBirdModel().update({
+      score: score > user.score ? score : user.score ,
+      }, {
+        where: {
+          user_app_id: userAppId
+        }
+      }
+      );
+  
+    if (LB_FlappyBirdUpdate === null) {
+      response.status(400).json(responseFail(LB_FlappyBirdUpdate))
+    } else {
+      const userUpdated = await LB_FlappyBirdModel().findOne({ where: { user_app_id: userAppId } });
+      response.status(200).json(responseSuccess(userUpdated))
+    }
+  }
+  
+}
+
+
+const getRankLB_FlappyBirds = async (request, response) => {
+  const orderBy = request.query.orderBy ? request.query.orderBy : 'score';
+  const sortBy = request.query.sortBy ? request.query.sortBy : 'DESC';
+  const limit = request.query.limit ? request.query.limit : 1000;
+  const userAppId = request.query.userAppId ? request.query.userAppId : "";
+
+  const LB_FlappyBirds = await LB_FlappyBirdModel().findAll({
+    order: [
+      [orderBy, sortBy],
+    ],
+    limit : limit,
+  });
+
+  if (LB_FlappyBirds === null) {
+    response.status(400).json(responseFail(LB_FlappyBirds))
+  } else {
+
+    let rank = 0;
+    let user = {};
+    for (let index = 0; index < LB_FlappyBirds.length; index++) {
+      if(LB_FlappyBirds[index].user_app_id === userAppId){
+        rank = index + 1;
+        user = LB_FlappyBirds[index];
+      }
+      
+    }
+    let dataRes = {
+      ranks : LB_FlappyBirds,
+      user : user,
+      userRank : rank
+    }
+    
+    response.status(200).json(responseSuccess(dataRes))
+  }
+  
+}
+
 const getLB_FlappyBirds = async (request, response) => {
-  const orderBy = request.query.orderBy ? request.query.orderBy : 'id';
-  const sortBy = request.query.sortBy ? request.query.sortBy : 'ASC';
+  const orderBy = request.query.orderBy ? request.query.orderBy : 'score';
+  const sortBy = request.query.sortBy ? request.query.sortBy : 'DESC';
   const limit = request.query.limit ? request.query.limit : 1000;
   const LB_FlappyBirds = await LB_FlappyBirdModel().findAll({
     order: [
@@ -95,4 +173,6 @@ module.exports = {
   createLB_FlappyBird,
   updateLB_FlappyBird,
   deleteLB_FlappyBird,
+  postScoreLB_FlappyBird,
+  getRankLB_FlappyBirds,
 }
