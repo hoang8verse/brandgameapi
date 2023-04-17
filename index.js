@@ -12,13 +12,19 @@ app.use(cors());
 
 const fs = require('fs');
 const http = require('http');
-// const https = require('https');
-// const options = {
-//   key: fs.readFileSync('key.pem'),
-//   cert: fs.readFileSync('cert.pem')
-// };
-// const httpServer = http.createServer(app);
-// const httpsServer = https.createServer(options, app);
+const https = require('https');
+
+// let path_key = 'private.key';
+// let path_cert = 'server.crt';
+let path_cert = '/etc/letsencrypt/live/rlgl2-api.brandgames.vn/fullchain.pem';
+let path_key = '/etc/letsencrypt/live/rlgl2-api.brandgames.vn/privkey.pem';
+
+const options = {
+  key: fs.readFileSync(path_key),
+  cert: fs.readFileSync(path_cert)
+};
+const httpServer = http.createServer(app);
+const httpsServer = https.createServer(options, app);
 
 
 const db_lb_arshooters = require('@client/lb_arshooters')
@@ -73,12 +79,12 @@ app.get('/lb_flappybirds_rank', db_lb_flappybirds.getRankLB_FlappyBirds)
 
 
 
-app.listen(port, () => {
-  console.log(`App running on port ${port}.`)
-})
+// app.listen(port, () => {
+//   console.log(`App running on port ${port}.`)
+// })
 
 // httpServer.listen(port);
-// httpsServer.listen(portHttps);
+httpsServer.listen(portHttps);
 
 console.log(process.env.DATABASE_URL)
 
