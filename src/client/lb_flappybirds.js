@@ -4,7 +4,9 @@ const {responseSuccess,responseFail} = require('./response')
 const {LB_FlappyBirdModel} = require('@models/lb_flappybird')
 
 const postScoreLB_FlappyBird = async (request, response) => {
-  const { userAppId, userName , avatar, gender, score } = request.query
+
+  const { userAppId, userName , avatar, gender, score } = request.body
+
 
   const user = await LB_FlappyBirdModel().findOne({ where: { user_app_id: userAppId } });
  

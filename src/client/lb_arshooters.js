@@ -5,7 +5,7 @@ const {LB_ARShooterModel} = require('@models/lb_arshooter')
 
 const postScoreLB_ARShooter = async (request, response) => {
   const id = parseInt(request.params.id)
-  const { userAppId, userName , avatar, gender, score } = request.query
+  const { userAppId, userName , avatar, gender, score } = request.body
 
   const user = await LB_ARShooterModel().findOne({ where: { user_app_id: userAppId } });
  
