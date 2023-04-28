@@ -1,10 +1,73 @@
 
+require('dotenv').config()
+
 const {responseSuccess,responseFail} = require('./response')
+const {enrichCDP, ingestCDP} = require('../CDP/cdp')
 
 const {LB_ARShooterModel} = require('@models/lb_arshooter')
 
+
+const enrichCDP_ARShooter = async (request, response) => {
+  // console.log(" request.body =============  " , request.body.user.userAppId)
+    // const { userAppId } = request.body;
+    let _env = {
+      cdpendpoind :process.env.CDP_ENDPOIND_FB,
+      cdpaid :process.env.CDP_AID_FB,
+      orgid :process.env.ORG_ID_FB,
+      appid :process.env.ZALO_APP_ID_FB,
+      oaid :process.env.OA_APP_ID_FB,
+  }
+  let _state = {
+    user : {
+      userAppId : request.body.user.userAppId
+    }
+  }
+  
+    let res = await enrichCDP(_env, _state);
+    if (res === null) {
+      response.status(400).json(responseFail(res))
+    } else {
+      response.status(200).json(responseSuccess(res))
+    }
+    
+  }
+  
+  const ingestCDP_ARShooter = async (request, response) => {
+  
+    // console.log(" request.body =============  " , request.body)
+    // const { userAppId } = request.body;
+    let _env = {
+      cdpendpoind :process.env.CDP_ENDPOIND_AR,
+      cdpaid :process.env.CDP_AID_AR,
+      orgid :process.env.ORG_ID_AR,
+      appid :process.env.ZALO_APP_ID_AR,
+      oaid :process.env.OA_APP_ID_AR,
+  }
+  let _state = {
+    user : {
+      userAppId : request.body.user.userAppId,
+      userName : request.body.user.userName,
+      userPhone : request.body.user.phoneNumber,
+      zoaUserAvatar : request.body.user.userAvatar,
+      followedOA : request.body.user.followedOA == "0" ? false : true,
+    }
+  }
+  
+  let _data = {
+    event : request.body.data.event,
+    eventState : request.body.data.eventState,
+    userEvent : "UserEvent"
+  }
+    let res = await ingestCDP(_env, _state, _data);
+    if (res === null) {
+      response.status(400).json(responseFail(res))
+    } else {
+      response.status(200).json(responseSuccess(res))
+    }
+  }
+
 const postScoreLB_ARShooter = async (request, response) => {
-  const id = parseInt(request.params.id)
+
   const { userAppId, userName , avatar, gender, score } = request.body
 
   const user = await LB_ARShooterModel().findOne({ where: { user_app_id: userAppId } });
@@ -176,4 +239,6 @@ module.exports = {
   deleteLB_ARShooter,
   postScoreLB_ARShooter,
   getRankLB_ARShooters,
+  enrichCDP_ARShooter,
+  ingestCDP_ARShooter
 }
