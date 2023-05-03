@@ -11,11 +11,11 @@ const enrichCDP_ARShooter = async (request, response) => {
   // console.log(" request.body =============  " , request.body.user.userAppId)
     // const { userAppId } = request.body;
     let _env = {
-      cdpendpoind :process.env.CDP_ENDPOIND_FB,
-      cdpaid :process.env.CDP_AID_FB,
-      orgid :process.env.ORG_ID_FB,
-      appid :process.env.ZALO_APP_ID_FB,
-      oaid :process.env.OA_APP_ID_FB,
+      cdpendpoind :process.env.CDP_ENDPOIND_AR,
+      cdpaid :process.env.CDP_AID_AR,
+      orgid :process.env.ORG_ID_AR,
+      appid :process.env.ZALO_APP_ID_AR,
+      oaid :process.env.OA_APP_ID_AR,
   }
   let _state = {
     user : {
