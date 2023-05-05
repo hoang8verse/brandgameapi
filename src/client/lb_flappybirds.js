@@ -45,7 +45,7 @@ let _state = {
     userAppId : request.body.user.userAppId,
     userName : request.body.user.userName,
     userPhone : request.body.user.phoneNumber,
-    zoaUserAvatar : request.body.user.userAvatar,
+    userAvatar : request.body.user.userAvatar,
     followedOA : request.body.user.followedOA == "0" ? false : true,
   }
 }
