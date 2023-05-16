@@ -107,6 +107,31 @@ const postScoreLB_ARShooter = async (request, response) => {
   
 }
 
+const resetRankingLB_ARShooter = async ( request, response) => {
+
+  const ids = [
+    ... ( await LB_ARShooterModel().findAll({
+      attributes: ['id'],
+      raw : true
+    })),
+  ].map(player => player.id);
+
+  // console.log("ids ==================================== ", ids)
+const LB_ARShooter = await LB_ARShooterModel().update({
+  score: 0 ,
+  }, {
+    where: {
+      id : ids 
+    }
+  }
+  );
+
+  if (LB_ARShooter === null) {
+    response.status(400).json(responseFail(LB_ARShooter))
+  } else {
+    response.status(200).json(responseSuccess(LB_ARShooter))
+  }
+}
 
 const getRankLB_ARShooters = async (request, response) => {
   const orderBy = request.query.orderBy ? request.query.orderBy : 'score';
@@ -240,5 +265,6 @@ module.exports = {
   postScoreLB_ARShooter,
   getRankLB_ARShooters,
   enrichCDP_ARShooter,
-  ingestCDP_ARShooter
+  ingestCDP_ARShooter,
+  resetRankingLB_ARShooter
 }

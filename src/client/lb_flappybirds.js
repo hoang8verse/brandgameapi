@@ -103,6 +103,32 @@ const postScoreLB_FlappyBird = async (request, response) => {
   
 }
 
+const resetRankingLB_FlappyBird = async (request, response) => {
+
+  const ids = [
+    ... ( await LB_FlappyBirdModel().findAll({
+      attributes: ['id'],
+      raw : true
+    })),
+  ].map(player => player.id);
+
+  // console.log("ids ==================================== ", ids)
+
+  const LB_FlappyBird = await LB_FlappyBirdModel().update({
+    score: 0 ,
+    }, {
+      where: {
+        id : ids 
+      }
+    }
+    );
+
+  if (LB_FlappyBird === null) {
+    response.status(400).json(responseFail(LB_FlappyBird))
+  } else {
+    response.status(200).json(responseSuccess(LB_FlappyBird))
+  }
+}
 
 const getRankLB_FlappyBirds = async (request, response) => {
   const orderBy = request.query.orderBy ? request.query.orderBy : 'score';
@@ -237,4 +263,5 @@ module.exports = {
   getRankLB_FlappyBirds,
   enrichCDP_FlappyBird,
   ingestCDP_FlappyBird,
+  resetRankingLB_FlappyBird,
 }

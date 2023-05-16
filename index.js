@@ -69,6 +69,7 @@ app.post('/lb_arshooters/postscore', db_lb_arshooters.postScoreLB_ARShooter)
 app.get('/lb_arshooters_rank', db_lb_arshooters.getRankLB_ARShooters)
 app.post('/arshooters_enrichCDP', db_lb_arshooters.enrichCDP_ARShooter)
 app.post('/arshooters_ingestCDP', db_lb_arshooters.ingestCDP_ARShooter)
+app.post('/arshooters_resetRanking', db_lb_arshooters.resetRankingLB_ARShooter)
 
 // lb_flappybird db
 app.get('/lb_flappybirds', db_lb_flappybirds.getLB_FlappyBirds)
@@ -80,6 +81,7 @@ app.post('/lb_flappybirds/postscore', db_lb_flappybirds.postScoreLB_FlappyBird)
 app.get('/lb_flappybirds_rank', db_lb_flappybirds.getRankLB_FlappyBirds)
 app.post('/flappybirds_enrichCDP', db_lb_flappybirds.enrichCDP_FlappyBird)
 app.post('/flappybirds_ingestCDP', db_lb_flappybirds.ingestCDP_FlappyBird)
+app.post('/flappybirds_resetRanking', db_lb_flappybirds.resetRankingLB_FlappyBird)
 
 
 // app.listen(port, () => {
