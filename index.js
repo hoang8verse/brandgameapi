@@ -29,6 +29,8 @@ const httpsServer = https.createServer(options, app);
 
 const db_lb_arshooters = require('@client/lb_arshooters')
 const db_lb_flappybirds = require('@client/lb_flappybirds')
+// for event vguy
+const db_lb_arshooters_event = require('@client/lb_arshooters_event_vguy')
 
 
 app.use(bodyParser.json())
@@ -82,6 +84,17 @@ app.get('/lb_flappybirds_rank', db_lb_flappybirds.getRankLB_FlappyBirds)
 app.post('/flappybirds_enrichCDP', db_lb_flappybirds.enrichCDP_FlappyBird)
 app.post('/flappybirds_ingestCDP', db_lb_flappybirds.ingestCDP_FlappyBird)
 app.post('/flappybirds_resetRanking', db_lb_flappybirds.resetRankingLB_FlappyBird)
+
+
+// lb_arshooters event db
+app.get('/lb_arshooters_event_vguy', db_lb_arshooters_event.getLB_ARShootersEvent)
+app.get('/lb_arshooters_event_vguy/:id', db_lb_arshooters_event.getLB_ARShooterEventById)
+app.post('/lb_arshooters_event_vguy', db_lb_arshooters_event.createLB_ARShooterEvent)
+app.put('/lb_arshooters_event_vguy/:id', db_lb_arshooters_event.updateLB_ARShooterEvent)
+app.delete('/lb_arshooters_event_vguy/:id', db_lb_arshooters_event.deleteLB_ARShooterEvent)
+app.post('/lb_arshooters_event_vguy/postscore', db_lb_arshooters_event.postScoreLB_ARShooterEvent)
+app.get('/lb_arshooters_rank_event_vguy', db_lb_arshooters_event.getRankLB_ARShootersEvent)
+app.post('/arshooters_resetRanking_event_vguy', db_lb_arshooters_event.resetRankingLB_ARShooterEvent)
 
 
 // app.listen(port, () => {
